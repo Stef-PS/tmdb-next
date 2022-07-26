@@ -1,35 +1,35 @@
 @import './colors.css';
 @import './typography.css';
-
-html {
-  font-family: var(--base-font-family);
-  font-size: var(--font-size-s);
-  font-weight: var(--font-weight-normal);
-  background-color: var(--color-white);
-  color: var(--color-black);
-}
-
-body {
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
+@import './spacing.css';
+@import './elevation.css';
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: var(--font-weight-bold);
+html, body {
+  padding: 0;
+  height: 100%;
 }
 
-h1 { font-size: var(--font-size-xxxl); }
-h2 { font-size: var(--font-size-xxl); }
-h3 { font-size: var(--font-size-xl); }
-h4 { font-size: var(--font-size-l); }
-h5 { font-size: var(--font-size-m); }
-h6 { font-size: var(--font-size-s); }
+#__next {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#__next > main {
+  flex: 1;
+  padding: var(--spacing-xs) 0;
+  position: relative;
+}
+
+button {
+  padding: var(--spacing-xxs) var(--spacing-l);
+  background-color: var(--color-primary-mid);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--spacing-xs);
+}

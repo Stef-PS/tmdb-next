@@ -19,3 +19,12 @@
   --color-danger-mid: hsl(10, 45%, 40%);
   --color-danger-dark: hsl(10, 45%, 50%);
 }
+
+html {
+  background-color: var(--color-white);
+  color: var(--color-black);
+}
+
+a {
+  color: inherit;
+}

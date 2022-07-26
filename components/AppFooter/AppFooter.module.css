@@ -1,0 +1,9 @@
+.appFooter {
+  background-color: var(--color-primary-mid);
+  color: var(--color-white);
+  padding: var(--spacing-xxs);
+  box-shadow: var(--elevation-mid);
+  font-size: 85%;
+  font-style: italic;
+  text-align: center;
+}

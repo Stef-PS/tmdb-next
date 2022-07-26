@@ -1,0 +1,6 @@
+.appHeader {
+  background-color: var(--color-primary-mid);
+  color: var(--color-white);
+  padding: var(--spacing-xxs) var(--spacing-s);
+  box-shadow: var(--elevation-mid);
+}
