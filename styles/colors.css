@@ -3,21 +3,26 @@
 :root {
   --color-white: hsl(30, 50%, 95%);
   --color-black: hsl(220, 50%, 10%);
-  --color-gray-light: hsl(230, 2%, 30%);
+
+  --color-gray-light: hsl(230, 2%, 70%);
   --color-gray-mid: hsl(230, 2%, 50%);
-  --color-gray-dark: hsl(230, 2%, 70%);
-  --color-primary-light: hsl(245, 35%, 30%);
+  --color-gray-dark: hsl(230, 2%, 30%);
+
+  --color-primary-light: hsl(245, 35%, 50%);
   --color-primary-mid: hsl(245, 35%, 40%);
-  --color-primary-dark: hsl(245, 35%, 50%);
-  --color-success-light: hsl(100, 33%, 25%);
+  --color-primary-dark: hsl(245, 35%, 30%);
+
+  --color-success-light: hsl(100, 33%, 45%);
   --color-success-mid: hsl(100, 33%, 35%);
-  --color-success-dark: hsl(100, 33%, 45%);
-  --color-warning-light: hsl(40, 45%, 40%);
+  --color-success-dark: hsl(100, 33%, 25%);
+
+  --color-warning-light: hsl(40, 45%, 60%);
   --color-warning-mid: hsl(40, 45%, 50%);
-  --color-warning-dark: hsl(40, 45%, 60%);
-  --color-danger-light: hsl(10, 45%, 30%);
+  --color-warning-dark: hsl(40, 45%, 40%);
+
+  --color-danger-light: hsl(10, 45%, 50%);
   --color-danger-mid: hsl(10, 45%, 40%);
-  --color-danger-dark: hsl(10, 45%, 50%);
+  --color-danger-dark: hsl(10, 45%, 30%);
 }
 
 html {

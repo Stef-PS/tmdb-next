@@ -1,0 +1,10 @@
+.searchBar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--spacing-xs);
+}
+
+.searchBar > button {
+  padding: var(--spacing-xs) var(--spacing-xl);
+}

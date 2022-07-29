@@ -31,5 +31,34 @@ button {
   background-color: var(--color-primary-mid);
   color: var(--color-white);
   border: none;
+  border-radius: var(--spacing-xxs);
+  box-shadow: var(--elevation-mid);
+}
+
+button:hover {
+  background-color: var(--color-primary-light);
+  box-shadow: var(--elevation-high);
+}
+
+button:active {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--elevation-low);
+}
+
+input[type='text'] {
+  flex: 1;
+  margin-right: var(--spacing-xs);
+  border-radius: var(--spacing-xxs);
+  padding: var(--spacing-xs);
+  border: none;
+  box-shadow: inset var(--elevation-mid);
   border-radius: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-family-sans-serif);
+  color: inherit;
+}
+
+input[type='text']:focus-visible {
+  outline: none;
+  box-shadow: inset var(--elevation-low);
 }
