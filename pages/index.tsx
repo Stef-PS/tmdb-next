@@ -1,4 +1,4 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import AppHeader from '../components/AppHeader/AppHeader'
 import AppFooter from '../components/AppFooter/AppFooter'
 import SearchBar from '../components/SearchBar/SearchBar'
@@ -12,17 +12,17 @@ const Home: NextPage<HomeProps> = (props: HomeProps) => {
     <>
       <AppHeader />
       <main>
-        <SearchBar />
+        <SearchBar search={props.search}/>
       </main>
       <AppFooter />
     </>
   )
 }
 
-export async function getServerSideProps() {
-  return {
-    props: { search: 'my search' },
-  }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { q, page } = context.query
+  if (!q) return { props: { search: '' } }
+  return { props: { search: q, page: page ?? 1 } }
 }
 
 export default Home

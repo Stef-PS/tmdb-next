@@ -1,23 +1,34 @@
 import { useRouter } from 'next/router';
+import { useRef, useState } from 'react';
 import styles from './SearchBar.module.css'
 
-const SearchBar = () => {
+interface SearchBarProps {
+  search?: string
+}
+
+const SearchBar = (props: SearchBarProps) => {
   const router = useRouter()
-  const search = (query: string): void => {
-    router.push(`/?q=${query}`)
+  const input = useRef(null)
+  const [value, setValue] = useState(props.search ?? '')
+
+  const search = (): void => {
+    router.push(value ? `/?q=${value}` : '/')
   }
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    search(e.target.value)
+  const handleEnterKey = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === 'Enter') {
+      search()
+    }
   }
-  const handleEnterKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') search(e.target.value)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setValue(e.target.value)
   }
 
   return (
     <section className={styles.searchBar}>
-      <input type="text" placeholder="Search for a movie..." onBlur={handleBlur} onKeyDown={handleEnterKey} />
-      <button>Search</button>
+      <input ref={input} type="text" placeholder="Search for a movie..." value={value} onChange={handleChange} onBlur={search} onKeyDown={handleEnterKey} />
+      <button onClick={search}>Search</button>
     </section>
   )
 }
