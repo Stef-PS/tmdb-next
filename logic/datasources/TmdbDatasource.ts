@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const LOCALE = 'fr-FR'
+const LOCALE = 'en-US'
+const API_URL = 'https://api.themoviedb.org/3'
 
 export interface SearchMovie {
   id: number,
@@ -29,13 +30,12 @@ export interface SearchMovieResult {
 export class TmdbDatasource {
   private apiKey = process.env.TMDB_API_KEY ?? 'test'
   private options = {
-    baseUrl: 'https://api.themoviedb.org/3',
     timeout: 2500,
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
   }
 
   searchMovie(query: string, page = 1): Promise<any> {
-    const url = `/search/movie?api_key=${this.apiKey}&query=${query}&page=${page}&language=${LOCALE}`
+    const url = `${API_URL}/search/movie?api_key=${this.apiKey}&query=${query}&page=${page}&language=${LOCALE}`
     return axios.get(url, this.options)
       .then((response) => response.data)
       .catch(error => {

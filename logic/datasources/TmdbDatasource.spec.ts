@@ -13,8 +13,8 @@ describe('Tmdb Client', () => {
     it('should perform a movie search with the right parameters', async () => {
       await tmdb.searchMovie('search', 1)
       expect(mockedAxios.get).toHaveBeenCalledWith(
-        '/search/movie?api_key=test&query=search&page=1&language=fr-FR',
-        { baseUrl: 'https://api.themoviedb.org/3', timeout: 2500, headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } }
+        'https://api.themoviedb.org/3/search/movie?api_key=test&query=search&page=1&language=en-US',
+        { timeout: 2500, headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } }
       )
     })
 
