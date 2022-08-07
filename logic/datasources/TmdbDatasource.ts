@@ -5,26 +5,26 @@ const API_URL = 'https://api.themoviedb.org/3'
 
 export interface SearchMovie {
   id: number,
-  poster_path: string,
+  posterPath: string,
   adult: boolean,
   overview: string,
-  release_date: string,
-  genre_ids: number[],
-  original_title: string,
-  original_language: string,
+  releaseDate: string,
+  genreIds: number[],
+  originalTitle: string,
+  originalLanguage: string,
   title: string,
-  backdrop_path: string,
+  backdropPath: string,
   popularity: number,
-  vote_count: number,
+  voteCount: number,
   video: boolean,
-  vote_average: number,
+  voteAverage: number,
 }
 
 export interface SearchMovieResult {
   page: number,
   results: SearchMovie[],
-  total_results: number,
-  total_pages: number,
+  totalResults: number,
+  totalPages: number,
 }
 
 export interface Configuration {
@@ -35,23 +35,40 @@ export interface Configuration {
   }
 }
 
+export const transformSearchMovie = (movie: any): SearchMovie => {
+  const {
+    id,
+    poster_path: posterPath,
+    adult,
+    overview,
+    release_date: releaseDate,
+    genre_ids: genreIds,
+    original_title: originalTitle,
+    original_language: originalLanguage,
+    title,
+    backdrop_path: backdropPath,
+    popularity,
+    vote_count: voteCount,
+    video,
+    vote_average: voteAverage,
+  } = movie
+  return { id, posterPath, adult, overview, releaseDate, genreIds, originalTitle, originalLanguage, title, backdropPath, popularity, voteCount, video, voteAverage }
+}
+
 export class TmdbDatasource {
   private apiKey = process.env.TMDB_API_KEY ?? 'test'
   private options = {
     timeout: 2500,
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
   }
+  private config: Configuration | null = null
 
-  searchMovie(query: string, page = 1): Promise<any> {
-    const url = `${API_URL}/search/movie?api_key=${this.apiKey}&query=${query}&page=${page}&language=${LOCALE}`
-    return axios.get(url, this.options)
-      .then((response) => response.data)
-      .catch(error => {
-        return Promise.reject(error)
-      })
+  resetConfiguration() {
+    this.config = null
   }
 
   getConfiguration(): Promise<Configuration> {
+    if (this.config) return Promise.resolve(this.config)
     const url = `${API_URL}/configuration?api_key=${this.apiKey}`
     return axios.get(url, this.options)
       .then((response) => {
@@ -60,7 +77,20 @@ export class TmdbDatasource {
           secure_base_url: secureBaseUrl,
           poster_sizes: posterSizes
         } = response.data.images
-        return { images: { baseUrl, secureBaseUrl, posterSizes } }
+        this.config = { images: { baseUrl, secureBaseUrl, posterSizes } }
+        return this.config
+      })
+      .catch(error => {
+        return Promise.reject(error)
+      })
+  }
+
+  searchMovie(query: string, page = 1): Promise<SearchMovieResult> {
+    const url = `${API_URL}/search/movie?api_key=${this.apiKey}&query=${query}&page=${page}&language=${LOCALE}`
+    return axios.get(url, this.options)
+      .then(({ data }) => {
+        const { results, page, total_results: totalResults, total_pages: totalPages } = data
+        return { page, results: results.map(transformSearchMovie), totalResults, totalPages }
       })
       .catch(error => {
         return Promise.reject(error)

@@ -1,7 +1,5 @@
-import { SearchMovie, SearchMovieResult } from './TmdbDatasource'
-
-export const searchMovieResultMock = (query: string, page: number, pageSize: number, total: number): SearchMovieResult => {
-  const results: SearchMovie[] = []
+export const searchMovieResultMock = (query: string, page: number, pageSize: number, total: number) => {
+  const results = []
   for (let i = pageSize * (page - 1); i < Math.min(pageSize * page, total); i++) {
     results.push({
       id: i,

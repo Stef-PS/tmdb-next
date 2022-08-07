@@ -1,5 +1,5 @@
 import axios from 'axios'
-import tmdb, { TmdbDatasource, tmdbDatasourceFactory } from './TmdbDatasource'
+import tmdb, { TmdbDatasource, tmdbDatasourceFactory, transformSearchMovie } from './TmdbDatasource'
 import { getConfigurationMock, searchMovieResultMock } from './tmdbDatasource.mock'
 
 jest.mock('axios', () => ({
@@ -28,9 +28,10 @@ describe('Tmdb Client', () => {
     })
 
     it('should return a valid movie search', async () => {
-      mockedAxios.get.mockResolvedValueOnce({ data: searchMovieResultMock('search', 3, 20, 40) })
-      const result = await tmdb.searchMovie('search', 1)
-      expect(result).toEqual(searchMovieResultMock('search', 3, 20, 40))
+      mockedAxios.get.mockResolvedValueOnce({ data: searchMovieResultMock('search', 1, 20, 40) })
+      const { results } = await tmdb.searchMovie('search', 1)
+      expect(results.length).toEqual(20)
+      expect(results[0]).toEqual(transformSearchMovie(searchMovieResultMock('search', 1, 20, 40).results[0]))
     })
 
     it('should return the second page results', async () => {
@@ -75,7 +76,18 @@ describe('Tmdb Client', () => {
       expect(result).toEqual({ images: { baseUrl: 'http', secureBaseUrl: 'https', posterSizes: ['posters'] } })
     })
 
+    it('should cache the configuration', async () => {
+      mockedAxios.get.mockClear()
+      mockedAxios.get.mockResolvedValueOnce({ data: getConfigurationMock() })
+      const tmdbInstance = new TmdbDatasource()
+      const config1 = await tmdbInstance.getConfiguration()
+      const config2 = await tmdbInstance.getConfiguration()
+      expect(mockedAxios.get).toHaveBeenCalledTimes(1)
+      expect(config1).toEqual(config2)
+    })
+
     it('should reject with the error', async () => {
+      tmdb.resetConfiguration()
       const error = { status_code: 500, status_message: 'Test error.', success: false }
       mockedAxios.get.mockRejectedValueOnce(error)
       await expect(tmdb.getConfiguration()).rejects.toEqual(error)
