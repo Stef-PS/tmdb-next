@@ -67,3 +67,10 @@ export class TmdbDatasource {
       })
   }
 }
+
+export const tmdbDatasourceFactory = (): TmdbDatasource => {
+  if (!(global as any).__tmdbSingleton__) (global as any).__tmdbSingleton__ = new TmdbDatasource()
+  return (global as any).__tmdbSingleton__
+}
+
+export default tmdbDatasourceFactory()

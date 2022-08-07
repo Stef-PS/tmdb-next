@@ -1,14 +1,22 @@
-import axios, { AxiosInstance } from 'axios'
-import { TmdbDatasource } from './TmdbDatasource'
+import axios from 'axios'
+import tmdb, { TmdbDatasource, tmdbDatasourceFactory } from './TmdbDatasource'
 import { getConfigurationMock, searchMovieResultMock } from './tmdbDatasource.mock'
 
 jest.mock('axios', () => ({
   get: jest.fn()
 }))
 const mockedAxios = axios as jest.Mocked<typeof axios>
-const tmdb = new TmdbDatasource()
 
 describe('Tmdb Client', () => {
+  describe('tmdbDatasource', () => {
+    it('should generate a singleton', () => {
+      const tmdb1 = new TmdbDatasource()
+      const tmdb2 = tmdbDatasourceFactory()
+      expect(tmdb1).not.toBe(tmdb2)
+      expect(tmdb2).toBe(tmdb)
+    })
+  })
+
   describe('saerchMovie', () => {
     it('should perform a movie search with the right parameters', async () => {
       mockedAxios.get.mockResolvedValueOnce({ data: searchMovieResultMock('search', 3, 20, 40) })

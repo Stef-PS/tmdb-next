@@ -3,7 +3,7 @@ import AppHeader from '../components/AppHeader/AppHeader'
 import AppFooter from '../components/AppFooter/AppFooter'
 import SearchBar from '../components/SearchBar/SearchBar'
 import MovieCard from '../components/MovieCard/MovieCard'
-import { TmdbDatasource, SearchMovie, SearchMovieResult } from '../logic/datasources/TmdbDatasource'
+import tmdb, { SearchMovie, SearchMovieResult } from '../logic/datasources/TmdbDatasource'
 
 interface HomeProps {
   search: string,
@@ -29,7 +29,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (!search) return { props: { search: '', movies: [] } }
 
-  const tmdb = new TmdbDatasource()
   const { results: movies } = await tmdb.searchMovie(search) as SearchMovieResult
 
   return { props: { search, movies } }
