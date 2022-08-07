@@ -27,6 +27,14 @@ export interface SearchMovieResult {
   total_pages: number,
 }
 
+export interface Configuration {
+  images: {
+    baseUrl: string,
+    secureBaseUrl: string,
+    posterSizes: string[]
+  }
+}
+
 export class TmdbDatasource {
   private apiKey = process.env.TMDB_API_KEY ?? 'test'
   private options = {
@@ -38,6 +46,22 @@ export class TmdbDatasource {
     const url = `${API_URL}/search/movie?api_key=${this.apiKey}&query=${query}&page=${page}&language=${LOCALE}`
     return axios.get(url, this.options)
       .then((response) => response.data)
+      .catch(error => {
+        return Promise.reject(error)
+      })
+  }
+
+  getConfiguration(): Promise<Configuration> {
+    const url = `${API_URL}/configuration?api_key=${this.apiKey}`
+    return axios.get(url, this.options)
+      .then((response) => {
+        const {
+          base_url: baseUrl,
+          secure_base_url: secureBaseUrl,
+          poster_sizes: posterSizes
+        } = response.data.images
+        return { images: { baseUrl, secureBaseUrl, posterSizes } }
+      })
       .catch(error => {
         return Promise.reject(error)
       })

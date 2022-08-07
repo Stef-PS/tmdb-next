@@ -27,3 +27,13 @@ export const searchMovieResultMock = (query: string, page: number, pageSize: num
     total_pages: page,
   }
 }
+
+export const getConfigurationMock = () => {
+  return {
+    images: {
+      base_url: 'http',
+      secure_base_url: 'https',
+      poster_sizes: ['posters']
+    }
+  }
+}

@@ -1,9 +1,9 @@
 import axios, { AxiosInstance } from 'axios'
 import { TmdbDatasource } from './TmdbDatasource'
-import { searchMovieResultMock } from './searchMovieResult.mock'
+import { getConfigurationMock, searchMovieResultMock } from './tmdbDatasource.mock'
 
 jest.mock('axios', () => ({
-  get: jest.fn(() => Promise.resolve({ data: searchMovieResultMock('search', 1, 20, 40) }))
+  get: jest.fn()
 }))
 const mockedAxios = axios as jest.Mocked<typeof axios>
 const tmdb = new TmdbDatasource()
@@ -11,6 +11,7 @@ const tmdb = new TmdbDatasource()
 describe('Tmdb Client', () => {
   describe('saerchMovie', () => {
     it('should perform a movie search with the right parameters', async () => {
+      mockedAxios.get.mockResolvedValueOnce({ data: searchMovieResultMock('search', 3, 20, 40) })
       await tmdb.searchMovie('search', 1)
       expect(mockedAxios.get).toHaveBeenCalledWith(
         'https://api.themoviedb.org/3/search/movie?api_key=test&query=search&page=1&language=en-US',
@@ -19,8 +20,9 @@ describe('Tmdb Client', () => {
     })
 
     it('should return a valid movie search', async () => {
+      mockedAxios.get.mockResolvedValueOnce({ data: searchMovieResultMock('search', 3, 20, 40) })
       const result = await tmdb.searchMovie('search', 1)
-      expect(result).toEqual(searchMovieResultMock('search', 1, 20, 40))
+      expect(result).toEqual(searchMovieResultMock('search', 3, 20, 40))
     })
 
     it('should return the second page results', async () => {
@@ -46,18 +48,29 @@ describe('Tmdb Client', () => {
     })
 
     it('should reject with the error', async () => {
-      const error = {
-        status_code: 7,
-        status_message: 'Invalid API key: You must be granted a valid key.',
-        success: false
-      }
+      const error = { status_code: 500, status_message: 'Test error.', success: false }
       mockedAxios.get.mockRejectedValueOnce(error)
       await expect(tmdb.searchMovie('search', 1)).rejects.toEqual(error)
     })
 
     it('should return page 1 as default', async () => {
+      mockedAxios.get.mockResolvedValueOnce({ data: searchMovieResultMock('search', 1, 20, 10) })
       const { page } = await tmdb.searchMovie('search')
       expect(page).toEqual(1)
+    })
+  })
+
+  describe('getConfiguration', () => {
+    it ('should return the configuration', async () => {
+      mockedAxios.get.mockResolvedValueOnce({ data: getConfigurationMock() })
+      const result = await tmdb.getConfiguration()
+      expect(result).toEqual({ images: { baseUrl: 'http', secureBaseUrl: 'https', posterSizes: ['posters'] } })
+    })
+
+    it('should reject with the error', async () => {
+      const error = { status_code: 500, status_message: 'Test error.', success: false }
+      mockedAxios.get.mockRejectedValueOnce(error)
+      await expect(tmdb.getConfiguration()).rejects.toEqual(error)
     })
   })
 })
