@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Rating from '../Rating'
 import { Configuration, SearchMovie } from "../../logic/datasources/TmdbDatasource"
 import styles from './MovieCard.module.css'
 
@@ -20,7 +21,7 @@ const MovieCard = ({ movie, config }: MovieCardProps) => {
         <div className={styles.title}>{movie.title}</div>
         <div className={styles.aside}>
           <div className={styles.year}>{movie.releaseDate.substring(0, 4)}</div>
-          <div className={styles.rating}>{movie.voteAverage}</div>
+          <Rating rate={movie.voteAverage} />
         </div>
       </div>
     </li>
