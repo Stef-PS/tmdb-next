@@ -29,9 +29,9 @@ export const searchMovieResultMock = (query: string, page: number, pageSize: num
 export const getConfigurationMock = () => {
   return {
     images: {
-      base_url: 'http',
-      secure_base_url: 'https',
-      poster_sizes: ['posters']
+      base_url: 'http://image.tmdb.org',
+      secure_base_url: 'https://image.tmdb.org',
+      poster_sizes: ['w500']
     }
   }
 }

@@ -1,11 +1,13 @@
 import axios from 'axios'
-import tmdb, { TmdbDatasource, tmdbDatasourceFactory, transformSearchMovie } from './TmdbDatasource'
+import tmdb, { TmdbDatasource, tmdbDatasourceFactory } from './TmdbDatasource'
 import { getConfigurationMock, searchMovieResultMock } from './tmdbDatasource.mock'
 
 jest.mock('axios', () => ({
   get: jest.fn()
 }))
 const mockedAxios = axios as jest.Mocked<typeof axios>
+mockedAxios.get.mockResolvedValueOnce({ data: getConfigurationMock() })
+tmdb.getConfiguration();
 
 describe('Tmdb Client', () => {
   describe('tmdbDatasource', () => {
@@ -15,14 +17,20 @@ describe('Tmdb Client', () => {
       expect(tmdb1).not.toBe(tmdb2)
       expect(tmdb2).toBe(tmdb)
     })
+
+    it('should have the configuration already loaded', async () => {
+      jest.clearAllMocks()
+      const config = await tmdb.getConfiguration()
+      expect(mockedAxios.get).toHaveBeenCalledTimes(0)
+    })
   })
 
-  describe('saerchMovie', () => {
+  describe('searchMovie', () => {
     it('should perform a movie search with the right parameters', async () => {
       mockedAxios.get.mockResolvedValueOnce({ data: searchMovieResultMock('search', 3, 20, 40) })
       await tmdb.searchMovie('search', 1)
       expect(mockedAxios.get).toHaveBeenCalledWith(
-        'https://api.themoviedb.org/3/search/movie?api_key=test&query=search&page=1&language=en-US',
+        'https://api.themoviedb.org/3/search/movie?api_key=test&query=search&page=1&language=en-US&include_adult=false',
         { timeout: 2500, headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } }
       )
     })
@@ -31,7 +39,7 @@ describe('Tmdb Client', () => {
       mockedAxios.get.mockResolvedValueOnce({ data: searchMovieResultMock('search', 1, 20, 40) })
       const { results } = await tmdb.searchMovie('search', 1)
       expect(results.length).toEqual(20)
-      expect(results[0]).toEqual(transformSearchMovie(searchMovieResultMock('search', 1, 20, 40).results[0]))
+      expect(results[0].title).toEqual('title_search_0')
     })
 
     it('should return the second page results', async () => {
@@ -67,13 +75,31 @@ describe('Tmdb Client', () => {
       const { page } = await tmdb.searchMovie('search')
       expect(page).toEqual(1)
     })
+
+    it('should return an empty poster path if poster_path is not defined on source', async () => {
+      const searchResults = searchMovieResultMock('search', 1, 20, 1)
+      searchResults.results[0].poster_path = ''
+      mockedAxios.get.mockResolvedValueOnce({ data: searchResults })
+      const { results } = await tmdb.searchMovie('search', 1)
+      expect(results[0].posterPath).toEqual('')
+    })
   })
 
   describe('getConfiguration', () => {
     it ('should return the configuration', async () => {
       mockedAxios.get.mockResolvedValueOnce({ data: getConfigurationMock() })
       const result = await tmdb.getConfiguration()
-      expect(result).toEqual({ images: { baseUrl: 'http', secureBaseUrl: 'https', posterSizes: ['posters'] } })
+      expect(result).toMatchInlineSnapshot(`
+Object {
+  "images": Object {
+    "baseUrl": "http://image.tmdb.org",
+    "posterSizes": Array [
+      "w500",
+    ],
+    "secureBaseUrl": "https://image.tmdb.org",
+  },
+}
+`)
     })
 
     it('should cache the configuration', async () => {
@@ -87,10 +113,19 @@ describe('Tmdb Client', () => {
     })
 
     it('should reject with the error', async () => {
-      tmdb.resetConfiguration()
+      const tmdbInstance = new TmdbDatasource()
       const error = { status_code: 500, status_message: 'Test error.', success: false }
+      mockedAxios.get.mockReset()
       mockedAxios.get.mockRejectedValueOnce(error)
-      await expect(tmdb.getConfiguration()).rejects.toEqual(error)
+      await expect(tmdbInstance.getConfiguration()).rejects.toEqual(error)
+    })
+
+    it('should refetch the config when removed', async () => {
+      jest.clearAllMocks()
+      tmdb.resetConfiguration()
+      mockedAxios.get.mockResolvedValueOnce({ data: getConfigurationMock() })
+      tmdb.getConfiguration()
+      expect(mockedAxios.get).toHaveBeenCalledTimes(1)
     })
   })
 })

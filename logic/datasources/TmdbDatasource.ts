@@ -6,17 +6,13 @@ const API_URL = 'https://api.themoviedb.org/3'
 export interface SearchMovie {
   id: number,
   posterPath: string,
-  adult: boolean,
   overview: string,
   releaseDate: string,
-  genreIds: number[],
   originalTitle: string,
   originalLanguage: string,
   title: string,
-  backdropPath: string,
   popularity: number,
   voteCount: number,
-  video: boolean,
   voteAverage: number,
 }
 
@@ -38,21 +34,18 @@ export interface Configuration {
 export const transformSearchMovie = (movie: any): SearchMovie => {
   const {
     id,
-    poster_path: posterPath,
-    adult,
+    poster_path,
     overview,
     release_date: releaseDate,
-    genre_ids: genreIds,
     original_title: originalTitle,
     original_language: originalLanguage,
     title,
-    backdrop_path: backdropPath,
     popularity,
+    poster_path: posterPath,
     vote_count: voteCount,
-    video,
     vote_average: voteAverage,
   } = movie
-  return { id, posterPath, adult, overview, releaseDate, genreIds, originalTitle, originalLanguage, title, backdropPath, popularity, voteCount, video, voteAverage }
+  return { id, posterPath, overview, releaseDate, originalTitle, originalLanguage, title, popularity, voteCount, voteAverage }
 }
 
 export class TmdbDatasource {
@@ -85,12 +78,12 @@ export class TmdbDatasource {
       })
   }
 
-  searchMovie(query: string, page = 1): Promise<SearchMovieResult> {
-    const url = `${API_URL}/search/movie?api_key=${this.apiKey}&query=${query}&page=${page}&language=${LOCALE}`
+  async searchMovie(query: string, page = 1): Promise<SearchMovieResult> {
+    const url = `${API_URL}/search/movie?api_key=${this.apiKey}&query=${query}&page=${page}&language=${LOCALE}&include_adult=false`
     return axios.get(url, this.options)
       .then(({ data }) => {
         const { results, page, total_results: totalResults, total_pages: totalPages } = data
-        return { page, results: results.map(transformSearchMovie), totalResults, totalPages }
+        return { page, results: results.map((movie: any) => transformSearchMovie(movie)), totalResults, totalPages }
       })
       .catch(error => {
         return Promise.reject(error)
