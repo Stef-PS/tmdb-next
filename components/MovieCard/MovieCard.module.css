@@ -1,0 +1,42 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+}
+
+.poster {
+  display: block;
+  width: 100%;
+  box-shadow: var(--elevation-mid);
+}
+
+.card:hover .poster {
+  box-shadow: var(--elevation-high);
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  margin: var(--spacing-xs) 0;
+  text-align: center;
+  flex: 1;
+}
+
+.info {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.aside {
+  padding: var(--spacing-xs);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}

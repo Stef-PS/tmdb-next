@@ -3,20 +3,21 @@ import AppHeader from '../components/AppHeader/AppHeader'
 import AppFooter from '../components/AppFooter/AppFooter'
 import SearchBar from '../components/SearchBar/SearchBar'
 import MovieCard from '../components/MovieCard/MovieCard'
-import tmdb, { SearchMovie, SearchMovieResult } from '../logic/datasources/TmdbDatasource'
+import tmdb, { Configuration, SearchMovie } from '../logic/datasources/TmdbDatasource'
 
 interface HomeProps {
   search: string,
   movies: SearchMovie[],
+  config: Configuration
 }
 
-const Home: NextPage<HomeProps> = (props: HomeProps) => {
+const Home: NextPage<HomeProps> = ({ search, movies, config }: HomeProps) => {
   return (
     <>
       <AppHeader />
       <main>
-        <SearchBar search={props.search}/>
-        {props.movies.map((movie: SearchMovie) => <MovieCard key={movie.id} movie={movie} />)}
+        <SearchBar search={search}/>
+        {movies.map((movie: SearchMovie) => <MovieCard key={movie.id} movie={movie} config={config} />)}
       </main>
       <AppFooter />
     </>
@@ -29,9 +30,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (!search) return { props: { search: '', movies: [] } }
 
-  const { results: movies } = await tmdb.searchMovie(search) as SearchMovieResult
+  const [searchMovies, config] = await Promise.all([
+    tmdb.searchMovie(search),
+    tmdb.getConfiguration()
+  ])
 
-  return { props: { search, movies } }
+  return { props: { search, movies: searchMovies.results, config } }
 }
 
 export default Home
