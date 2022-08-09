@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rating should render Rating unchanged 1`] = `
+<div>
+  <div
+    class="rating"
+  >
+    <span
+      class="star"
+    >
+      ★
+    </span>
+    <span
+      class="star"
+    >
+      ★
+    </span>
+    <span
+      class="starEmpty"
+    >
+      ★
+    </span>
+    <span
+      class="starEmpty"
+    >
+      ★
+    </span>
+    <span
+      class="starEmpty"
+    >
+      ★
+    </span>
+  </div>
+</div>
+`;

@@ -20,7 +20,7 @@ const customJestConfig = {
       lines: 90
     }
   },
-  coveragePathIgnorePatterns: ['.*tsx?.snap', '.*mock.tsx?']
+  coveragePathIgnorePatterns: ['.*tsx?.snap', '.*mock.tsx?', '.*index.ts']
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

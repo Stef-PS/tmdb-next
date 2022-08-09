@@ -1,15 +1,16 @@
 .rating {
   text-align: center;
+  letter-spacing: +2px
 }
 
 .star {
   font-size: var(--font-size-m);
   color: var(--color-warning-light);
-  -webkit-text-stroke: 1px var(--color-warning-mid);
+  -webkit-text-stroke: 1px var(--color-warning-light);
 }
 
 .starEmpty {
   font-size: var(--font-size-m);
   color: var(--color-white);
-  -webkit-text-stroke: 1px var(--color-warning-dark);
+  -webkit-text-stroke: 1px var(--color-warning-mid);
 }
