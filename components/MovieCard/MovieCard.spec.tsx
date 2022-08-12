@@ -29,4 +29,3 @@ describe('MovieCard', () => {
     expect(container).toMatchSnapshot()
   })
 })
-

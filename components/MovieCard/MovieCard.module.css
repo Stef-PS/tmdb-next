@@ -1,8 +1,9 @@
 .card {
+  justify-self: start;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
   cursor: pointer;
   padding: var(--spacing-xs);

@@ -43,7 +43,31 @@ exports[`MovieCard should render MovieCard unchanged 1`] = `
         <div
           class="rating"
         >
-          10
+          <span
+            class="star"
+          >
+            ★
+          </span>
+          <span
+            class="star"
+          >
+            ★
+          </span>
+          <span
+            class="star"
+          >
+            ★
+          </span>
+          <span
+            class="star"
+          >
+            ★
+          </span>
+          <span
+            class="star"
+          >
+            ★
+          </span>
         </div>
       </div>
     </div>

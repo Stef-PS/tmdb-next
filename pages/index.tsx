@@ -1,8 +1,8 @@
 import type { GetServerSideProps, NextPage } from 'next'
-import AppHeader from '../components/AppHeader/AppHeader'
-import AppFooter from '../components/AppFooter/AppFooter'
-import SearchBar from '../components/SearchBar/SearchBar'
-import MovieCard from '../components/MovieCard/MovieCard'
+import AppFooter from '../components/AppFooter'
+import AppHeader from '../components/AppHeader'
+import MovieList from '../components/MovieList'
+import SearchBar from '../components/SearchBar'
 import tmdb, { Configuration, SearchMovie } from '../logic/datasources/TmdbDatasource'
 
 interface HomeProps {
@@ -15,9 +15,9 @@ const Home: NextPage<HomeProps> = ({ search, movies, config }: HomeProps) => {
   return (
     <>
       <AppHeader />
-      <main>
+      <main className="page-content">
         <SearchBar search={search}/>
-        {movies.map((movie: SearchMovie) => <MovieCard key={movie.id} movie={movie} config={config} />)}
+        <MovieList movies={movies} config={config} />
       </main>
       <AppFooter />
     </>

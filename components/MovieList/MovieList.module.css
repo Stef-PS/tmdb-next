@@ -1,0 +1,6 @@
+.movieList {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xxs);
+}

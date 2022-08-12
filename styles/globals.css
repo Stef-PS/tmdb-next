@@ -62,3 +62,9 @@ input[type='text']:focus-visible {
   outline: none;
   box-shadow: inset var(--elevation-low);
 }
+
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
