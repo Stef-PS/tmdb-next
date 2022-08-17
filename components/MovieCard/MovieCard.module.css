@@ -16,13 +16,11 @@
   }
 }
 
-.poster {
-  display: block;
-  width: 100%;
+.card div img {
   box-shadow: var(--elevation-mid);
 }
 
-.card:hover .poster {
+.card:hover div img {
   box-shadow: var(--elevation-high);
 }
 
@@ -40,6 +38,11 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+}
+
+.card:hover .info {
+  color: var(--color-warning-dark);
+  -webkit-text-stroke: 1px var(--color-warning-dark);
 }
 
 .year {

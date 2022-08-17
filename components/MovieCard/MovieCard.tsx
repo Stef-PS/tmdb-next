@@ -1,4 +1,4 @@
-import Image from "next/image"
+import MoviePoster from "../MoviePoster"
 import Rating from '../Rating'
 import { Configuration, SearchMovie } from "../../logic/datasources/TmdbDatasource"
 import styles from './MovieCard.module.css'
@@ -14,9 +14,7 @@ const MovieCard = ({ movie, config }: MovieCardProps) => {
 
   return (
     <li className={styles.card}>
-      <div className={styles.poster}>
-        <Image src={posterUrl} alt={movie.title} layout="responsive" width={image.width} height={image.height} />
-      </div>
+      <MoviePoster className={styles.poster} imageUrl={posterUrl} fallbackUrl="/clapperboard.jpg" alt={movie.title} aspectRatio="2/3" />
       <div className={styles.info}>
         <div className={styles.title}>{movie.title}</div>
         <div className={styles.aside}>

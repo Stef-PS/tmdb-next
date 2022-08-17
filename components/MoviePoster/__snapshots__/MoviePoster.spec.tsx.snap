@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MoviePoster should render as usual 1`] = `
+<div>
+  <div
+    class="MoviePoster"
+  >
+    <img
+      alt="movie poster"
+      src="https://via.placeholder.com/300/00FF00/000000?text=valid"
+    />
+  </div>
+</div>
+`;
