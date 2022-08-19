@@ -1,23 +1,39 @@
+export interface BelongsToCollection {
+  id: number
+  name: string
+  posterPath: string
+  backdropPath: string
+}
+
+export interface Genre {
+  id: number
+  name: string
+}
+
+export interface ProductionCompany {
+  id: number
+  logoPath: string
+  name: string
+  originCountry: string
+}
+
+export interface ProductionCountry {
+  iso3166_1: string
+  name: string
+}
+
+export interface SpokenLanguage {
+  englishName: string
+  iso639_1: string
+  name: string
+}
+
 export interface Movie {
   adult: boolean,
   backdropPath: string,
-  belongsToCollection: {
-    id: number,
-    name: string,
-    posterPath: string,
-    backdropPath: string
-  },
+  belongsToCollection: BelongsToCollection,
   budget: number,
-  genres: [
-    {
-      id: number,
-      name: string
-    },
-    {
-      id: number,
-      name: string
-    }
-  ],
+  genres: Genre[],
   homepage: string,
   id: number,
   imdbId: string,
@@ -26,50 +42,16 @@ export interface Movie {
   overview: string,
   popularity: number,
   posterPath: string,
-  productionCompanies: [
-    {
-      id: number,
-      logoPath: string,
-      name: string,
-      originCountry: string
-    },
-    {
-      id: number,
-      logoPath: string,
-      name: string,
-      originCountry: string
-    },
-    {
-      id: number,
-      logoPath: string,
-      name: string,
-      originCountry: string
-    }
-  ],
-  productionCountries: [
-    {
-      iso31661: string,
-      name: string
-    },
-    {
-      iso_3166_1: string,
-      name: string
-    }
-  ],
+  productionCompanies: ProductionCompany[],
+  productionCountries: ProductionCountry[],
   releaseDate: string,
   revenue: number,
   runtime: number,
-  spokenLanguages: [
-    {
-      englishName: string,
-      iso6391: string,
-      name: string
-    }
-  ],
+  spokenLanguages: SpokenLanguage[],
   status: string,
   tagline: string,
   title: string,
-  video: false,
+  video: boolean,
   voteAverage: number,
   voteCount: number
 }

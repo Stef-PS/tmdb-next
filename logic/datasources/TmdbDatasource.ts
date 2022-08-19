@@ -1,25 +1,11 @@
 import axios from 'axios'
-import { SearchMovie, SearchMovieResult } from '../interfaces/SearchMovie'
+import { SearchMovieResult } from '../interfaces/SearchMovie'
 import { Configuration } from '../interfaces/Configuration'
+import { Movie } from '../interfaces/Movie'
+import { transformMovie, transformSearchMovie } from '../utils/MovieUtils'
 
 const LOCALE = 'en-US'
 const API_URL = 'https://api.themoviedb.org/3'
-
-export const transformSearchMovie = (movie: any): SearchMovie => {
-  const {
-    id,
-    overview,
-    release_date: releaseDate,
-    original_title: originalTitle,
-    original_language: originalLanguage,
-    title,
-    popularity,
-    poster_path: posterPath,
-    vote_count: voteCount,
-    vote_average: voteAverage,
-  } = movie
-  return { id, posterPath, overview, releaseDate, originalTitle, originalLanguage, title, popularity, voteCount, voteAverage }
-}
 
 export class TmdbDatasource {
   private apiKey = process.env.TMDB_API_KEY ?? 'test'
@@ -59,6 +45,16 @@ export class TmdbDatasource {
         return { page, results: results.map((movie: any) => transformSearchMovie(movie)), totalResults, totalPages }
       })
       .catch(error => {
+        return Promise.reject(error)
+      })
+  }
+
+  async getMovie(id: number): Promise<Movie> {
+    const url = `${API_URL}/movie/${id}?api_key=${this.apiKey}&language=${LOCALE}`
+    return axios.get(url, this.options)
+      .then(({ data }) => {
+        return transformMovie(data)
+      }).catch(error => {
         return Promise.reject(error)
       })
   }

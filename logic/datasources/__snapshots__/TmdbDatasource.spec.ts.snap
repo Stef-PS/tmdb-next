@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tmdb Client getMovie should return a valid movie 1`] = `
+Object {
+  "adult": false,
+  "backdropPath": "backdrop_path_1",
+  "belongsToCollection": Object {
+    "backdropPath": "backdrop_path_1",
+    "id": 1,
+    "name": "name_1",
+    "posterPath": "poster_path_1",
+  },
+  "budget": 1,
+  "genres": Array [
+    Object {
+      "id": 1,
+      "name": "name_1",
+    },
+  ],
+  "homepage": "homepage_1",
+  "id": 1,
+  "imdbId": "imdb_id_1",
+  "originalLanguage": "original_language",
+  "originalTitle": "original_title_1",
+  "overview": "overview_1",
+  "popularity": 1,
+  "posterPath": "poster_path_1",
+  "productionCompanies": Array [
+    Object {
+      "id": 1,
+      "logoPath": "logo_path_1",
+      "name": "name_1",
+      "originCountry": "origin_country_1",
+    },
+  ],
+  "productionCountries": Array [
+    Object {
+      "iso3166_1": "iso_3166_1_1",
+      "name": "name_1",
+    },
+  ],
+  "releaseDate": "release_date",
+  "revenue": 1,
+  "runtime": 1,
+  "spokenLanguages": Array [
+    Object {
+      "englishName": "english_name_1",
+      "iso639_1": "iso_639_1_1",
+      "name": "name_1",
+    },
+  ],
+  "status": "status",
+  "tagline": "tagline_1",
+  "title": "title_1",
+  "video": false,
+  "voteAverage": 1,
+  "voteCount": 1,
+}
+`;

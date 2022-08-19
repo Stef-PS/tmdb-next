@@ -1,6 +1,6 @@
 import axios from 'axios'
 import tmdb, { TmdbDatasource, tmdbDatasourceFactory } from './TmdbDatasource'
-import { getConfigurationMock, searchMovieResultMock } from './tmdbDatasource.mock'
+import { getConfigurationMock, getMovieMock, searchMovieResultMock } from './tmdbDatasource.mock'
 
 jest.mock('axios', () => ({
   get: jest.fn()
@@ -20,7 +20,7 @@ describe('Tmdb Client', () => {
 
     it('should have the configuration already loaded', async () => {
       jest.clearAllMocks()
-      const config = await tmdb.getConfiguration()
+      await tmdb.getConfiguration()
       expect(mockedAxios.get).toHaveBeenCalledTimes(0)
     })
   })
@@ -126,6 +126,32 @@ Object {
       mockedAxios.get.mockResolvedValueOnce({ data: getConfigurationMock() })
       tmdb.getConfiguration()
       expect(mockedAxios.get).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('getMovie', () => {
+    it('should perform a movie search with the right parameters', async () => {
+      jest.clearAllMocks()
+      mockedAxios.get.mockResolvedValueOnce({ data: getMovieMock(1) })
+      await tmdb.getMovie(1)
+      expect(mockedAxios.get).toHaveBeenCalledWith(
+        'https://api.themoviedb.org/3/movie/1?api_key=test&language=en-US',
+        { timeout: 2500, headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' } }
+      )
+    })
+
+    it('should return a valid movie', async () => {
+      jest.clearAllMocks()
+      mockedAxios.get.mockResolvedValueOnce({ data: getMovieMock(1) })
+      const result = await tmdb.getMovie(1)
+      expect(result).toMatchSnapshot()
+    })
+
+    it('should reject with the error', async () => {
+      jest.clearAllMocks()
+      const error = { status_code: 500, status_message: 'Test error.', success: false }
+      mockedAxios.get.mockRejectedValueOnce(error)
+      await expect(tmdb.getMovie(1)).rejects.toEqual(error)
     })
   })
 })
