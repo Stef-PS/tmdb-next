@@ -1,40 +1,13 @@
 import axios from 'axios'
+import { SearchMovie, SearchMovieResult } from '../interfaces/SearchMovie'
+import { Configuration } from '../interfaces/Configuration'
 
 const LOCALE = 'en-US'
 const API_URL = 'https://api.themoviedb.org/3'
 
-export interface SearchMovie {
-  id: number,
-  posterPath: string,
-  overview: string,
-  releaseDate: string,
-  originalTitle: string,
-  originalLanguage: string,
-  title: string,
-  popularity: number,
-  voteCount: number,
-  voteAverage: number,
-}
-
-export interface SearchMovieResult {
-  page: number,
-  results: SearchMovie[],
-  totalResults: number,
-  totalPages: number,
-}
-
-export interface Configuration {
-  images: {
-    baseUrl: string,
-    secureBaseUrl: string,
-    posterSizes: string[]
-  }
-}
-
 export const transformSearchMovie = (movie: any): SearchMovie => {
   const {
     id,
-    poster_path,
     overview,
     release_date: releaseDate,
     original_title: originalTitle,

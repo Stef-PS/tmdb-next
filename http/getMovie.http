@@ -1,0 +1,5 @@
+GET https://api.themoviedb.org/3/movie/671
+  ?api_key=50cdb8415e70da1be365188587305005
+  &language=fr-FR HTTP/1.1
+Content-type: application/json
+Accept: application/json
